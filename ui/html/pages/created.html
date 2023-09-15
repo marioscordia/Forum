@@ -1,0 +1,31 @@
+{{define "title"}}Created posts{{end}} {{define "main"}}
+<span>
+  <ul class="horizontal-list">
+    <li><h2>My snippets</h2></li>
+    <li>
+      <h2><a href="/snippet/commented">My comments</a></h2>
+    </li>
+    <li>
+      <h2><a href="/reacted/snippet">Snippet reactions</a></h2>
+    </li>
+    <li>
+      <h2><a href="/reacted/comment">Comment reactions</a></h2>
+    </li>
+  </ul>
+</span>
+{{if .Snippets}}
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Created</th>
+  </tr>
+  {{range .Snippets}}
+  <tr>
+    <td><a href="/snippet/view?id={{.ID}}">{{shortenStr .Title}}</a></td>
+    <td>{{humanDate .Created}}</td>
+  </tr>
+  {{end}}
+</table>
+{{else}}
+<p>There's nothing to see here... yet!</p>
+{{end}} {{end}}

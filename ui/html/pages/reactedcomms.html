@@ -1,0 +1,43 @@
+{{define "title"}}Reacted comments{{end}} {{define "main"}}
+<span>
+  <ul class="horizontal-list">
+    <li>
+      <h2>Comment reactions</h2>
+    </li>
+    <li>
+      <h2><a href="/reacted/snippet">Snippet reactions</a></h2>
+    </li>
+    <li>
+      <h2><a href="/snippet/created">My snippets</a></h2>
+    </li>
+    <li>
+      <h2><a href="/snippet/commented">My comments</a></h2>
+    </li>
+  </ul>
+</span>
+{{if .Comments}}
+<table>
+  <tr>
+    <th>Comment</th>
+    <th>Snippet</th>
+    <th>Created</th>
+    <th>Status</th>
+  </tr>
+  {{range .Comments}}
+  <tr>
+    <td>
+      <a href="/snippet/view?id={{.SnippetID}}#{{.ID}}"
+        >{{shortenStr .Content}}</a
+      >
+    </td>
+    <td>
+      <a href="/snippet/view?id={{.SnippetID}}">{{shortenStr .SnippetTitle}}</a>
+    </td>
+    <td>{{humanDate .Created}}</td>
+    <td>{{if eq .Status "likecomment"}}Liked{{else}}Disliked{{end}}</td>
+  </tr>
+  {{end}}
+</table>
+{{else}}
+<p>There's nothing to see here... yet!</p>
+{{end}} {{end}}

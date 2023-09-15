@@ -1,0 +1,36 @@
+{{define "title"}}Notifications{{end}}{{define "main"}}
+<h2>Notifications</h2>
+{{if .Notifications}} {{range .Notifications}} {{if eq .Action "comment"}}
+<div class="snippet">
+  <div class="metadata">
+    <time
+      >{{.Author}} left a
+      <a href="/snippet/view?id={{.SnippetID}}#{{.CommentID}}">comment</a> on
+      your <a href="/snippet/view?id={{.SnippetID}}">post</a></time
+    >
+    <time> Time: {{ humanDate .Timestamp }} </time>
+  </div>
+</div>
+{{else if eq .Action "likepost"}}
+<div class="snippet">
+  <div class="metadata">
+    <time
+      >{{.Author}} liked your
+      <a href="/snippet/view?id={{.SnippetID}}">post</a></time
+    >
+    <time> Time: {{ humanDate .Timestamp }} </time>
+  </div>
+</div>
+{{else if eq .Action "dislikepost"}}
+<div class="snippet">
+  <div class="metadata">
+    <time
+      >{{.Author}} disliked your
+      <a href="/snippet/view?id={{.SnippetID}}">post</a></time
+    >
+    <time> Time: {{ humanDate .Timestamp }} </time>
+  </div>
+</div>
+{{end}} {{end}} {{else}}
+<p>There are no notifications...yet!</p>
+{{end}}{{end}}

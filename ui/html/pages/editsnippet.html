@@ -1,0 +1,22 @@
+{{define "title"}}Edit snippet{{end}} {{define "main"}}
+<h2>Edit your snippet</h2>
+<form action="/snippet/edit?id={{.Snippet.ID}}" method="POST">
+  <div>
+    <label>Title:</label>
+    {{with .Form.FieldErrors.title}}
+    <label class="error">{{.}}</label>
+    {{end}}
+    <input type="text" name="title" value="{{.Form.Title}}" />
+  </div>
+  <div>
+    <label>Content:</label>
+    {{with .Form.FieldErrors.content}}
+    <label class="error">{{.}}</label>
+    {{end}}
+    <textarea name="content">{{.Form.Content}}</textarea>
+  </div>
+  <div>
+    <input type="submit" value="Edit post" />
+  </div>
+</form>
+{{end}}

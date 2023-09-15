@@ -1,0 +1,31 @@
+{{define "base"}}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/static/css/main.css" />
+    <link
+      rel="shortcut icon"
+      href="/static/img/diamond.ico"
+      type="image/x-icon"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700"
+    />
+    <title>{{template "title" .}} - forum</title>
+  </head>
+  <body>
+    <header>
+      <h1><a href="/">FORUM</a></h1>
+    </header>
+    {{template "nav" .}}
+    <main>{{template "main" .}}</main>
+    <footer>Done by @ashaimur @gatzba @makhmeto in {{.CurrentYear}}</footer>
+    <script src="/static/js/main.js" type="text/javascript"></script>
+    <script src="/static/js/comment.js" type="text/javascript"></script>
+  </body>
+</html>
+{{end}}

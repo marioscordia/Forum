@@ -1,0 +1,31 @@
+{{define "title"}}Users{{end}}{{define "main"}}
+<h2>The list of users</h2>
+{{if .Users}} {{range .Users}} {{if eq .Role 3}}
+<div class="snippet">
+  <div class="metadata">
+    <time>{{.Name}} - user </time>
+    <time>
+      <form action="/user/role" method="POST">
+        <input type="hidden" name="decision" value="upgrade" />
+        <input type="hidden" name="id" value="{{.ID}}" />
+        <button>Upgrade to moderator</button>
+      </form>
+    </time>
+  </div>
+</div>
+{{else if eq .Role 2}}
+<div class="snippet">
+  <div class="metadata">
+    <time>{{.Name}} - moderator </time>
+    <time>
+      <form action="/user/role" method="POST">
+        <input type="hidden" name="decision" value="downgrade" />
+        <input type="hidden" name="id" value="{{.ID}}" />
+        <button>Downgrade to user</button>
+      </form>
+    </time>
+  </div>
+</div>
+{{end}} {{end}} {{else}}
+<p>There are no users...yet!</p>
+{{end}} {{end}}

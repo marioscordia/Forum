@@ -1,0 +1,28 @@
+{{define "title"}}Requests{{end}}{{define "main"}}
+<h2>Request for moderation</h2>
+{{if .Users}} {{range .Users}}
+<div class="snippet">
+  <div class="metadata">
+    <time>Username: {{.Name}} </time>
+    <time>ID: {{.ID}}</time>
+  </div>
+  <div class="metadata">
+    <time
+      ><form action="/user/approval" method="POST">
+        <input type="hidden" name="decision" value="upgrade" />
+        <input type="hidden" name="id" value="{{.ID}}" />
+        <button>Approve</button>
+      </form></time
+    >
+    <time
+      ><form action="/user/approval" method="POST">
+        <input type="hidden" name="decision" value="reject" />
+        <input type="hidden" name="id" value="{{.ID}}" />
+        <button>Reject</button>
+      </form></time
+    >
+  </div>
+</div>
+{{end}}{{else}}
+<p>There are no requests...yet!</p>
+{{end}} {{end}}

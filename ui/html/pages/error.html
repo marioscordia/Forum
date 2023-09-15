@@ -1,0 +1,5 @@
+{{define "title"}}Post #{{.ErrorInfo.Text}}{{end}} {{define "main"}} {{with
+.ErrorInfo}}
+<h2>{{.Code}}</h2>
+<span>{{.Text}}</span>
+{{end}}{{end}}

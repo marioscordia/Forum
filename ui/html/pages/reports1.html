@@ -1,0 +1,23 @@
+{{define "title"}}Snippet reports{{end}}{{define "main"}}
+<span>
+  <ul class="horizontal-list">
+    <li><h2>Snippet reports</h2></li>
+    <li>
+      <h2><a href="/report/comment">Comment reports</a></h2>
+    </li>
+  </ul>
+</span>
+{{if .Snippets}} {{range .Snippets}}
+<div class="snippet">
+  <div class="metadata">
+    <time
+      >Checkout post
+      <a href="/snippet/view?id={{.ID}}">{{shortenStr .Title}}</a>
+    </time>
+    <time> Author: {{.Author}} </time>
+  </div>
+</div>
+<br />
+{{end}} {{else}}
+<p>There are no reports...yet!</p>
+{{end}} {{end}}

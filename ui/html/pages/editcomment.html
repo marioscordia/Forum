@@ -1,0 +1,17 @@
+{{define "title"}}Edit comment{{end}}{{define "main"}}
+<h2>Edit your comment</h2>
+<form
+  action="/comment/edit?id={{.Comment.SnippetID}}&cid={{.Comment.ID}}"
+  method="POST"
+>
+  {{with .Form.FieldErrors.comment}}
+  <label class="error">{{.}}</label>
+  {{end}}
+  <div>
+    <input type="text" name="comment" value="{{.Form.Comment}}" />
+  </div>
+  <div>
+    <input type="submit" value="Edit comment" />
+  </div>
+</form>
+{{end}}

@@ -1,0 +1,38 @@
+{{define "nav"}}
+<nav>
+  <div class="home" style="width: 70%">
+    <a href="/">Home</a>
+    {{if .IsAuthenticated}}
+    <a href="/snippet/create">Create post</a>
+    <a href="/snippet/created">My activity</a>
+    <a href="/notifications">Notifications({{.NotNum}})</a>
+    {{if eq .Role 1}}
+    <a href="/report/snippet">Reports</a>
+    <!-- <a href="/report/comment">Comment reports</a> -->
+    <a href="/user/requests">Requests</a>
+    <a href="/user/list">Users list</a>
+    {{else if eq .Role 2}}
+    <a href="/pending">To approve</a>
+    {{else if eq .Role 3}}{{if eq .Requested 0}}
+    <form action="/user/request" method="POST">
+      <button>Be moderator</button>
+    </form>
+    {{end}}{{end}}{{end}}
+  </div>
+
+  <div class="login" style="width: 30%">
+    {{if .IsAuthenticated}}
+    <form action="/user/logout" method="POST">
+      <span
+        >{{.Name}} {{if eq .Role 1}}(admin){{else if eq .Role
+        2}}(moderator){{end}}</span
+      >
+      <button>Logout</button>
+    </form>
+    {{else}}
+    <a href="/user/signup">Signup</a>
+    <a href="/user/signin">Login</a>
+    {{end}}
+  </div>
+</nav>
+{{end}}

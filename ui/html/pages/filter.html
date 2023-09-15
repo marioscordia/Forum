@@ -1,0 +1,38 @@
+{{define "title"}}Home{{end}} {{define "main"}}
+<h2>Posts</h2>
+<form action="/filter" method="GET">
+  <label>Category</label>
+  <div>
+    <input type="checkbox" name="category" value="Gaming" />
+    <label for="category">Gaming</label>
+    <input type="checkbox" name="category" value="Sports" />
+    <label for="category">Sports</label>
+    <input type="checkbox" name="category" value="Movies" />
+    <label for="category">Movies</label>
+    <input type="checkbox" name="category" value="Politics" />
+    <label for="category">Politics</label>
+    <input type="checkbox" name="category" value="Business" />
+    <label for="category">Business</label>
+  </div>
+  <div>
+    <input type="submit" value="Filter" />
+  </div>
+</form>
+{{if .Snippets}}
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Created</th>
+    <th>Author</th>
+  </tr>
+  {{range .Snippets}}
+  <tr>
+    <td><a href="/snippet/view?id={{.ID}}">{{shortenStr .Title}}</a></td>
+    <td>{{humanDate .Created}}</td>
+    <td>{{.Author}}</td>
+  </tr>
+  {{end}}
+</table>
+{{else}}
+<p>There is nothing according to your request:(</p>
+{{end}} {{end}}

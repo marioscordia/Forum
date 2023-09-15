@@ -1,0 +1,18 @@
+{{define "title"}}Pending{{end}}{{define "main"}} {{if .Snippets}}
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Created</th>
+    <th>Author</th>
+  </tr>
+  {{range .Snippets}}
+  <tr>
+    <td><a href="/pending/view?id={{.ID}}">{{.Title}}</a></td>
+    <td>{{humanDate .Created}}</td>
+    <td>{{.Author}}</td>
+  </tr>
+  {{end}}
+</table>
+{{else}}
+<p>There's nothing to see here... yet!</p>
+{{end}} {{end}}

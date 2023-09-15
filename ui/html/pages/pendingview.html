@@ -1,0 +1,45 @@
+{{define "title"}}Pending #{{.Snippet.ID}}{{end}} {{define "main"}} {{with
+.Snippet}}
+<span>
+  <ul class="horizontal-list">
+    {{range .Category}}
+    <li><b>{{.}}</b></li>
+    {{end}}
+  </ul>
+</span>
+<div class="snippet">
+  <div class="metadata">
+    <strong>{{.Title}}</strong>
+    <!-- <span>#{{.ID}}</span> -->
+  </div>
+  <div class="post-image" style="max-height: 900px; overflow: hidden">
+    <img
+      alt="Image"
+      src="/store/img/{{.Image}}"
+      style="width: 100%; height: 100%; object-fit: cover"
+    />
+  </div>
+  <pre><code>{{.Content}}</code></pre>
+  <div class="metadata">
+    <time>Author: {{.Author}} </time>
+    <time>Created: {{ humanDate .Created }}</time>
+  </div>
+  <div class="metadata">
+    <time
+      ><form action="/pending/approval" method="POST">
+        <input type="hidden" name="decision" value="approve" />
+        <input type="hidden" name="id" value="{{.ID}}" />
+        <button>Approve</button>
+      </form></time
+    >
+    <time
+      ><form action="/pending/approval" method="POST">
+        <input type="hidden" name="decision" value="reject" />
+        <input type="hidden" name="id" value="{{.ID}}" />
+        <input type="hidden" name="image" value="{{.Image}}" />
+        <button>Reject</button>
+      </form></time
+    >
+  </div>
+</div>
+{{end}}{{end}}
