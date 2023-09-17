@@ -1,10 +1,11 @@
 package handler
 
 import (
+	"errors"
 	"net/http"
 	"newforum/internal/form"
+	"newforum/internal/oops"
 	"newforum/internal/temp"
-	"newforum/internal/validator"
 )
 
 func (h *Handler) Home(w http.ResponseWriter, r *http.Request) {
@@ -49,18 +50,15 @@ func (h *Handler) Category(w http.ResponseWriter, r *http.Request) {
 			Category: r.URL.Query()["category"],
 		}
 
-		form.CheckField(validator.CheckCategory(form.Category), "filter", "Choose filter")
-
-		if !form.Valid() {
-			tmpData.Form = form
-			h.render(w, http.StatusBadRequest, "home.html", tmpData)
-			return
-		}
-
-		snippets, err := h.service.FilterSnippets(form)
+		snippets, err := h.service.FilterSnippets(&form)
 		if err != nil {
-			h.Error(err)
-			h.ErrorHandler(w, http.StatusInternalServerError, tmpData)
+			if errors.Is(err, oops.ErrFormInvalid){
+				tmpData.Form = form
+				h.render(w, http.StatusUnprocessableEntity, "home.html", tmpData)
+			}else{
+				h.Error(err)
+				h.ErrorHandler(w, http.StatusInternalServerError, tmpData)
+			}
 			return
 		}
 		

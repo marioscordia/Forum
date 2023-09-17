@@ -14,7 +14,6 @@ func (h *Handler) Pending(w http.ResponseWriter, r *http.Request) {
 	tmpData := r.Context().Value(ctxKey).(*temp.TemplateData)
 	switch r.Method {
 	case http.MethodGet:
-
 		snippets, err := h.service.PendingSnippets()
 		if err != nil {
 			h.Error(err)
@@ -83,8 +82,7 @@ func (h *Handler) Approval(w http.ResponseWriter, r*http.Request){
 			Decision: r.PostForm.Get("decision"),
 		}
 
-		err = h.service.Approval(&form)
-		if err != nil {
+		if err = h.service.Approval(&form); err != nil{
 			h.Error(err)
 			h.ErrorHandler(w, http.StatusInternalServerError, tmpData)
 			return
@@ -114,8 +112,7 @@ func (h *Handler) SnippetReport(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		err = h.service.ReportSnippet(snippetID)
-		if err != nil {
+		if err = h.service.ReportSnippet(snippetID); err != nil{
 			h.Error(err)
 			h.ErrorHandler(w, http.StatusInternalServerError, tmpData)
 			return
@@ -131,9 +128,7 @@ func (h *Handler) CommentReport(w http.ResponseWriter, r *http.Request) {
 	tmpData := r.Context().Value(ctxKey).(*temp.TemplateData)
 	switch r.Method {
 	case http.MethodPost:
-
-		err := r.ParseForm()
-		if err != nil {
+		if err := r.ParseForm();err != nil {
 			h.Error(err)
 			h.ErrorHandler(w, http.StatusInternalServerError, tmpData)
 			return
@@ -158,8 +153,7 @@ func (h *Handler) CommentReport(w http.ResponseWriter, r *http.Request) {
 			CommentID: commentID,
 		}
 
-		err = h.service.ReportComment(&form)
-		if err != nil { 
+		if err = h.service.ReportComment(&form); err != nil{ 
 			h.Error(err)
 			h.ErrorHandler(w, http.StatusInternalServerError, tmpData)
 			return

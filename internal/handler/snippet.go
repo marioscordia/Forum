@@ -17,8 +17,7 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 		tmpData.Form = form.SnippetCreate{}
 		h.render(w, http.StatusOK, "create.html", tmpData)
 	case http.MethodPost:
-		err := r.ParseMultipartForm(1024 * 1024 * 20)
-		if err != nil {
+		if err := r.ParseMultipartForm(1024 * 1024 * 20); err != nil {
 			h.Error(err)
 			h.ErrorHandler(w, http.StatusInternalServerError, tmpData)
 			return

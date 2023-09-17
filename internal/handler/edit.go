@@ -51,8 +51,7 @@ func (h *Handler) SnippetEdit(w http.ResponseWriter, r *http.Request){
 			return
 		}
 
-		err = r.ParseForm()
-		if err != nil{
+		if err = r.ParseForm(); err != nil{
 			h.Error(err)
 			h.ErrorHandler(w, http.StatusInternalServerError, tmpData)
 			return
@@ -64,12 +63,11 @@ func (h *Handler) SnippetEdit(w http.ResponseWriter, r *http.Request){
 			Content: r.PostForm.Get("content"),
 		}
 
-		err = h.service.EditSnippet(&form)
-		if err != nil{
+		if err = h.service.EditSnippet(&form); err != nil{
 			if errors.Is(err, oops.ErrFormInvalid){
 				tmpData.Form = form
 				tmpData.Snippet = &store.Snippet{ID: id}
-				h.render(w, http.StatusBadRequest, "editsnippet.html", tmpData)
+				h.render(w, http.StatusUnprocessableEntity, "editsnippet.html", tmpData)
 			}else{
 				h.Error(err)
 				h.ErrorHandler(w, http.StatusInternalServerError, tmpData)
@@ -133,8 +131,7 @@ func (h *Handler) CommentEdit(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		
-		err = r.ParseForm()
-		if err != nil {
+		if err = r.ParseForm(); err != nil{
 			h.Error(err)
 			h.ErrorHandler(w, http.StatusInternalServerError, tmpData)
 			return
@@ -145,12 +142,11 @@ func (h *Handler) CommentEdit(w http.ResponseWriter, r *http.Request) {
 			Comment: r.PostForm.Get("comment"),
 		}
 
-		err = h.service.EditComment(&form)
-		if err != nil{
+		if err = h.service.EditComment(&form); err != nil{
 			if errors.Is(err, oops.ErrFormInvalid){
 				tmpData.Comment = &store.Comment{SnippetID: id, ID: cid}
 				tmpData.Form = form
-				h.render(w, http.StatusBadRequest, "editcomment.html", tmpData)
+				h.render(w, http.StatusUnprocessableEntity, "editcomment.html", tmpData)
 			}else{
 				h.Error(err)	
 				h.ErrorHandler(w, http.StatusInternalServerError, tmpData)
@@ -159,7 +155,6 @@ func (h *Handler) CommentEdit(w http.ResponseWriter, r *http.Request) {
 		}
 
 		url := fmt.Sprintf("/snippet/view?id=%d#%d", id, cid)
-
 		http.Redirect(w, r, url, http.StatusSeeOther)
 	default:
 		h.ErrorHandler(w, http.StatusMethodNotAllowed, tmpData)

@@ -45,7 +45,7 @@ type Comment interface {
 
 type Snippet interface{
 	GetSnippets() ([]*store.Snippet, error)
-	FilterSnippets(filter form.Filter) ([]*store.Snippet, error)
+	FilterSnippets(form *form.Filter) ([]*store.Snippet, error)
 	CreateSnippet(form *form.SnippetCreate) (int, error)
 	EditSnippet(form *form.SnippetEdit) error
 	DeleteSnippet(snippetID int, image string) error

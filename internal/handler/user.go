@@ -23,8 +23,7 @@ func (h *Handler) SignUp(w http.ResponseWriter, r *http.Request){
 				h.ErrorHandler(w, http.StatusForbidden, tmpData)
 				return
 			}
-			err := r.ParseForm()
-			if err != nil {
+			if err := r.ParseForm(); err != nil {
 				h.Error(err)
 				h.ErrorHandler(w, http.StatusInternalServerError, tmpData)
 				return
@@ -37,8 +36,7 @@ func (h *Handler) SignUp(w http.ResponseWriter, r *http.Request){
 				Confirm: r.PostForm.Get("confirm"),
 			}
 			
-			err = h.service.CreateUser(&form)
-			if err != nil{
+			if err := h.service.CreateUser(&form); err != nil{
 				if errors.Is(err, oops.ErrFormInvalid){
 					tmpData.Form = form
 					h.render(w, http.StatusUnprocessableEntity, "signup.html", tmpData)
@@ -71,8 +69,7 @@ func (h *Handler) SignIn(w http.ResponseWriter, r *http.Request){
 				return
 			}
 			
-			err := r.ParseForm()
-			if err != nil {
+			if err := r.ParseForm(); err != nil{
 				h.Error(err)
 				h.ErrorHandler(w, http.StatusInternalServerError, tmpData)
 				return
@@ -84,19 +81,18 @@ func (h *Handler) SignIn(w http.ResponseWriter, r *http.Request){
 			}
 
 			userID, err := h.service.Authenticate(&form)
-    		if err != nil {
-					if errors.Is(err, oops.ErrInvalidCredentials) {
-						tmpData.Form = form
-						h.render(w, http.StatusUnprocessableEntity, "signin.html", tmpData)
-					} else {
-						h.Error(err)
-						h.ErrorHandler(w, http.StatusInternalServerError, tmpData)
-					} 
-					return
-    		}
-
-			err = h.service.CreateSession(w, userID)
 			if err != nil {
+				if errors.Is(err, oops.ErrInvalidCredentials) {
+					tmpData.Form = form
+					h.render(w, http.StatusUnprocessableEntity, "signin.html", tmpData)
+				} else {
+					h.Error(err)
+					h.ErrorHandler(w, http.StatusInternalServerError, tmpData)
+				} 
+				return
+			}
+
+			if err = h.service.CreateSession(w, userID); err != nil{
 				h.Error(err)
 				h.ErrorHandler(w, http.StatusInternalServerError, tmpData)
 				return
@@ -120,8 +116,7 @@ func (h *Handler) Logout(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		err = h.service.DeleteSession(w, cookie)
-		if err != nil {
+		if err = h.service.DeleteSession(w, cookie); err != nil {
 			h.Error(err)
 			h.ErrorHandler(w, http.StatusInternalServerError, tmpData)
 			return
@@ -137,9 +132,12 @@ func (h *Handler) BeModerator(w http.ResponseWriter, r *http.Request) {
 	tmpData := r.Context().Value(ctxKey).(*temp.TemplateData)
 	switch r.Method{
 	case http.MethodPost:
+		if tmpData.Role != 3{
+			h.ErrorHandler(w, http.StatusUnauthorized, tmpData)
+			return
+		}
 
-		err := h.service.MakeRequest(tmpData.ID)
-		if err != nil {
+		if err := h.service.MakeRequest(tmpData.ID); err != nil {
 			h.Error(err)
 			h.ErrorHandler(w, http.StatusInternalServerError, tmpData)
 			return

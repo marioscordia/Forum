@@ -20,7 +20,6 @@ func (h *Handler) Requests(w http.ResponseWriter, r*http.Request){
 		}
 
 		tmpData.Users = users
-
 		h.render(w, http.StatusOK, "requests.html", tmpData)
 	default:
 		h.ErrorHandler(w, http.StatusMethodNotAllowed, tmpData)
@@ -49,8 +48,7 @@ func (h *Handler) AdminApproval(w http.ResponseWriter, r *http.Request){
 			Decision: r.PostForm.Get("decision"),
 		}
 
-		err = h.service.AdminApproval(&form)
-		if err != nil {
+		if err = h.service.AdminApproval(&form); err != nil{
 			h.Error(err)
 			h.ErrorHandler(w, http.StatusInternalServerError, tmpData)
 			return
@@ -102,8 +100,7 @@ func (h *Handler) ChangeRole(w http.ResponseWriter, r *http.Request){
 			Decision: r.PostForm.Get("decision"),
 		}
 
-		err = h.service.AdminApproval(&form)
-		if err != nil {
+		if err = h.service.AdminApproval(&form); err != nil{
 			h.Error(err)
 			h.ErrorHandler(w, http.StatusInternalServerError, tmpData)
 			return
@@ -119,7 +116,7 @@ func (h *Handler) ApproveSnippet(w http.ResponseWriter, r*http.Request){
 	tmpData := r.Context().Value(ctxKey).(*temp.TemplateData)
 	switch r.Method{
 	case http.MethodPost:
-		if err := r.ParseForm(); err != nil {
+		if err := r.ParseForm(); err != nil{
 			h.Error(err)
 			h.ErrorHandler(w, http.StatusInternalServerError, tmpData)
 			return
@@ -132,15 +129,13 @@ func (h *Handler) ApproveSnippet(w http.ResponseWriter, r*http.Request){
 			return
 		}
 
-		err = h.service.UnreportSnippet(id)
-		if err != nil {
+		if err = h.service.UnreportSnippet(id); err != nil {
 			h.Error(err)
 			h.ErrorHandler(w, http.StatusInternalServerError, tmpData)
 			return
 		}
 
 		http.Redirect(w, r, fmt.Sprintf("/snippet/view?id=%d", id), http.StatusSeeOther)
-		
 	default:
 		h.ErrorHandler(w, http.StatusMethodNotAllowed, tmpData)
 	}
@@ -165,15 +160,13 @@ func (h *Handler) ApproveComment(w http.ResponseWriter, r*http.Request){
 			return
 		}
 
-		err = h.service.UnreportComment(commentID)
-		if err != nil {
+		if err = h.service.UnreportComment(commentID); err != nil{
 			h.Error(err)
 			h.ErrorHandler(w, http.StatusInternalServerError, tmpData)
 			return
 		}
 
 		http.Redirect(w, r, fmt.Sprintf("/snippet/view?id=%s#%d", snippetID, commentID), http.StatusSeeOther)
-		
 	default:
 		h.ErrorHandler(w, http.StatusMethodNotAllowed, tmpData)
 	}
@@ -189,6 +182,7 @@ func (h *Handler) SnippetReports(w http.ResponseWriter, r *http.Request) {
 			h.ErrorHandler(w, http.StatusInternalServerError, tmpData)
 			return
 		}
+
 		tmpData.Snippets = snippets
 		h.render(w, http.StatusOK, "reports1.html", tmpData)
 	default:
@@ -206,6 +200,7 @@ func (h *Handler) CommentReports(w http.ResponseWriter, r *http.Request) {
 			h.ErrorHandler(w, http.StatusInternalServerError, tmpData)
 			return
 		}
+		
 		tmpData.Comments = comments
 		h.render(w, http.StatusOK, "reports2.html", tmpData)
 	default:

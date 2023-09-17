@@ -11,8 +11,7 @@ func (h *Handler) DeleteSnippet(w http.ResponseWriter, r *http.Request){
 	tmpData := r.Context().Value(ctxKey).(*temp.TemplateData)
 	switch r.Method{
 	case http.MethodPost:
-		err := r.ParseForm()
-		if err != nil {
+		if err := r.ParseForm(); err != nil{
 			h.Error(err)
 			h.ErrorHandler(w, http.StatusInternalServerError, tmpData)	
 			return
@@ -23,8 +22,8 @@ func (h *Handler) DeleteSnippet(w http.ResponseWriter, r *http.Request){
 			h.Error(err)
 			h.ErrorHandler(w, http.StatusInternalServerError, tmpData)	
 		}
-		image := r.PostForm.Get("image")
 
+		image := r.PostForm.Get("image")
 		snippet, err := h.service.GetSnippet(id)
 		if err != nil {
 			h.Error(err)
@@ -37,8 +36,7 @@ func (h *Handler) DeleteSnippet(w http.ResponseWriter, r *http.Request){
 			return
 		}
 
-		err = h.service.DeleteSnippet(id, image)
-		if err != nil {
+		if err = h.service.DeleteSnippet(id, image); err != nil{
 			h.Error(err)
 			h.ErrorHandler(w, http.StatusInternalServerError, tmpData)
 			return
@@ -54,15 +52,13 @@ func (h *Handler) DeleteComment(w http.ResponseWriter, r *http.Request){
 	tmpData := r.Context().Value(ctxKey).(*temp.TemplateData)
 	switch r.Method{
 	case http.MethodPost:
-		err := r.ParseForm()
-		if err != nil {
+		if err := r.ParseForm(); err != nil{
 			h.Error(err)
 			h.ErrorHandler(w, http.StatusInternalServerError, tmpData)	
 			return
 		}
 
 		id := r.PostForm.Get("snippetid")
-		
 		cid, err := strconv.Atoi(r.PostForm.Get("commentid"))
 		if err != nil {
 			h.Error(err)
@@ -80,8 +76,7 @@ func (h *Handler) DeleteComment(w http.ResponseWriter, r *http.Request){
 			return
 		}
 
-		err = h.service.DeleteComment(cid)
-		if err != nil {
+		if err = h.service.DeleteComment(cid); err != nil{
 			h.Error(err)
 			h.ErrorHandler(w, http.StatusInternalServerError, tmpData)
 			return

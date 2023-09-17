@@ -18,8 +18,7 @@ func (h *Handler) SnippetReaction(w http.ResponseWriter, r *http.Request){
 			h.ErrorHandler(w, http.StatusNotFound, tmpData)
 			return
 		}
-		err = r.ParseForm()
-		if err != nil{
+		if err = r.ParseForm(); err != nil{
 			h.Error(err)
 			h.ErrorHandler(w, http.StatusInternalServerError, tmpData)
 			return
@@ -32,8 +31,7 @@ func (h *Handler) SnippetReaction(w http.ResponseWriter, r *http.Request){
 			Reaction: r.PostForm.Get("reaction"),
 		}
 
-		err = h.service.SnippetReaction(form)
-		if err != nil{
+		if err = h.service.SnippetReaction(form); err != nil{
 			h.Error(err)
 			h.ErrorHandler(w, http.StatusInternalServerError, tmpData)
 			return
@@ -51,7 +49,6 @@ func (h *Handler) CommentReaction(w http.ResponseWriter, r *http.Request){
 
 	switch r.Method{
 	case http.MethodPost:
-
 		snippetID, err := strconv.Atoi(r.URL.Query().Get("id"))
 		if err != nil || snippetID < 1 {
 			h.Error(err)
@@ -65,8 +62,7 @@ func (h *Handler) CommentReaction(w http.ResponseWriter, r *http.Request){
 			return
 		}
 
-		err = r.ParseForm()		
-		if err != nil{
+		if err = r.ParseForm(); err != nil{
 			h.Error(err)
 			h.ErrorHandler(w, http.StatusInternalServerError, tmpData)
 			return
@@ -78,8 +74,7 @@ func (h *Handler) CommentReaction(w http.ResponseWriter, r *http.Request){
 			Reaction: r.PostForm.Get("reaction"),
 		}
 
-		err = h.service.CommentReaction(form)
-		if err != nil{
+		if err = h.service.CommentReaction(form); err != nil{
 			h.Error(err)
 			h.ErrorHandler(w, http.StatusInternalServerError, tmpData)
 		}

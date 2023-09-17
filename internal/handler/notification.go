@@ -17,8 +17,7 @@ func (h *Handler) Notification(w http.ResponseWriter, r *http.Request){
 		}
 		tmpData.Notifications = nots
 		
-		err = h.service.Update(tmpData.ID)
-		if err != nil {
+		if err = h.service.Update(tmpData.ID); err != nil {
 			h.Error(err)
 			h.ErrorHandler(w, http.StatusInternalServerError, tmpData)
 			return

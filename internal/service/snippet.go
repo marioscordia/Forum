@@ -29,9 +29,13 @@ func (s *SnippetService) GetSnippets() ([]*store.Snippet, error) {
 	return s.snippet.LatestSnippets()
 }
 
-
-func (s *SnippetService) FilterSnippets(filter form.Filter) ([]*store.Snippet, error) {
-	return s.snippet.FilterSnippets(filter)
+func (s *SnippetService) FilterSnippets(form *form.Filter) ([]*store.Snippet, error) {
+	form.CheckField(validator.CheckCategory(form.Category), "filter", "Choose filter")
+	if !form.Valid() {
+		return nil, oops.ErrFormInvalid
+	}
+	
+	return s.snippet.FilterSnippets(*form)
 }
 
 func (s *SnippetService) CreateSnippet(form *form.SnippetCreate) (int, error) {
